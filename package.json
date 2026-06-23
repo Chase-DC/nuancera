@@ -1,0 +1,38 @@
+{
+  "name": "nuancera",
+  "productName": "Nuancera",
+  "version": "0.0.6",
+  "description": "Nuancera — a fully offline macOS color-palette tool for academic publishing (Nature/Science/Cell-style figures and slides).",
+  "author": "Chase",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "node scripts/copy-vendor.js",
+    "start": "electron .",
+    "dist": "electron-builder --mac --arm64"
+  },
+  "build": {
+    "appId": "com.chase.nuancera",
+    "productName": "Nuancera",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "icon": "build/icon.png",
+      "target": [
+        { "target": "dmg", "arch": ["arm64"] },
+        { "target": "dir", "arch": ["arm64"] }
+      ]
+    }
+  },
+  "dependencies": {
+    "pdfjs-dist": "3.11.174"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}

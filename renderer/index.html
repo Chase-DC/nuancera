@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'" />
+  <title>Nuancera</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="titlebar">
+    <span class="wordmark">Nuancera</span>
+    <span class="version" id="versionTag"></span>
+    <span class="offline-badge" data-i18n="tb.offline">offline</span>
+    <span class="spacer"></span>
+    <label class="lang-pick">
+      <span class="lang-label" data-i18n="lang.label">Language</span>
+      <select id="langSelect">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </label>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar">
+      <button class="nav-item active" data-view="build" data-i18n="nav.build">Build</button>
+      <button class="nav-item" data-view="presets" data-i18n="nav.presets">Presets</button>
+      <button class="nav-item" data-view="suggest" data-i18n="nav.suggest">Suggestions</button>
+      <button class="nav-item" data-view="journals" data-i18n="nav.journals">Journal Palettes</button>
+      <button class="nav-item" data-view="extract" data-i18n="nav.extract">Extract from PDF</button>
+      <button class="nav-item" data-view="colors" data-i18n="nav.colors">Color Library</button>
+      <button class="nav-item" data-view="library" data-i18n="nav.palettes">Saved Palettes</button>
+      <button class="nav-item" data-view="guide" data-i18n="nav.guide">Color Guide</button>
+    </nav>
+
+    <main class="content">
+      <!-- ============================ BUILD ============================ -->
+      <section class="view" id="view-build">
+        <div class="view-head">
+          <h1 data-i18n="build.title">Build a palette</h1>
+          <p class="sub" data-i18n="build.sub"></p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h2 data-i18n="build.inputCard">Color input &amp; conversion</h2>
+            <div class="input-row">
+              <input type="text" id="colorInput" data-i18n-ph="build.inputPh" spellcheck="false" />
+              <input type="color" id="colorPicker" value="#1b3a5c" />
+            </div>
+            <div class="big-swatch" id="bigSwatch"></div>
+            <div class="codes" id="codeList"></div>
+            <div class="row-actions">
+              <button class="btn primary" id="addToPalette" data-i18n="build.addToPalette">Add to palette</button>
+              <button class="btn" id="saveColorBtn" data-i18n="build.saveColor">★ Save color</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head-row">
+              <h2><span data-i18n="build.working">Working palette</span> <span class="count" id="paletteCount"></span></h2>
+              <div class="row-actions">
+                <button class="btn ghost" id="addSwatchBtn" data-i18n="build.addColor">+ color</button>
+                <button class="btn ghost" id="clearPaletteBtn" data-i18n="build.clear">Clear</button>
+              </div>
+            </div>
+            <div class="swatch-strip" id="swatchStrip"></div>
+            <div class="palette-meta" id="paletteMeta"></div>
+            <div class="export-row">
+              <span class="export-label" data-i18n="build.export">Export</span>
+              <button class="btn" data-export="hex" data-i18n="exp.hex">HEX list</button>
+              <button class="btn" data-export="json" data-i18n="exp.json">JSON</button>
+              <button class="btn" data-export="gpl" data-i18n="exp.gpl">.gpl</button>
+              <button class="btn" data-export="ase" data-i18n="exp.ase">.ase</button>
+              <button class="btn" data-export="png" data-i18n="exp.png">PNG sheet</button>
+              <button class="btn" id="saveWorkingBtn" data-i18n="build.saveToLib">Save to library</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 data-i18n="build.previews">Applied previews</h2>
+          <div class="mock-grid">
+            <div class="mock"><div class="mock-title" data-i18n="mock.bar">Bar chart</div><div id="mockBar"></div></div>
+            <div class="mock"><div class="mock-title" data-i18n="mock.line">Line plot</div><div id="mockLine"></div></div>
+            <div class="mock"><div class="mock-title" data-i18n="mock.slide">Slide title block</div><div id="mockSlide"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ PRESETS ============================ -->
+      <section class="view hidden" id="view-presets">
+        <div class="view-head">
+          <h1 data-i18n="presets.title">Preset library</h1>
+          <p class="sub" data-i18n="presets.sub"></p>
+        </div>
+        <div class="filters" id="presetFilters">
+          <div class="filter-group" data-group="type">
+            <span class="filter-label" data-i18n="f.type">Type</span>
+            <button class="chip active" data-val="all" data-i18n="f.all">All</button>
+            <button class="chip" data-val="qualitative" data-i18n="type.qualitative">Qualitative</button>
+            <button class="chip" data-val="sequential" data-i18n="type.sequential">Sequential</button>
+            <button class="chip" data-val="diverging" data-i18n="type.diverging">Diverging</button>
+          </div>
+          <div class="filter-group" data-group="mood">
+            <span class="filter-label" data-i18n="f.mood">Mood</span>
+            <button class="chip active" data-val="all" data-i18n="f.all">All</button>
+            <button class="chip" data-val="editorial" data-i18n="mood.editorial">Editorial</button>
+            <button class="chip" data-val="minimal" data-i18n="mood.minimal">Minimal</button>
+            <button class="chip" data-val="warm" data-i18n="mood.warm">Warm</button>
+            <button class="chip" data-val="cool" data-i18n="mood.cool">Cool</button>
+            <button class="chip" data-val="high-contrast" data-i18n="mood.high-contrast">High-contrast</button>
+          </div>
+          <div class="filter-group" data-group="cb">
+            <span class="filter-label" data-i18n="f.cb">Colorblind</span>
+            <button class="chip active" data-val="all" data-i18n="f.all">All</button>
+            <button class="chip" data-val="safe" data-i18n="f.safeOnly">Safe only</button>
+          </div>
+        </div>
+        <div class="preset-list" id="presetList"></div>
+      </section>
+
+      <!-- ========================== SUGGESTIONS ========================== -->
+      <section class="view hidden" id="view-suggest">
+        <div class="view-head">
+          <h1 data-i18n="suggest.title">Color suggestions</h1>
+          <p class="sub" data-i18n="suggest.sub"></p>
+        </div>
+        <div class="card">
+          <div class="input-row">
+            <input type="text" id="suggestInput" value="#1b3a5c" spellcheck="false" />
+            <input type="color" id="suggestPicker" value="#1b3a5c" />
+            <label class="inline-select">
+              <span data-i18n="suggest.category">Scheme</span>
+              <select id="suggestType">
+                <option value="all" data-i18n="cat.all">All</option>
+                <option value="analogous" data-i18n="cat.analogous">Analogous</option>
+                <option value="complementary" data-i18n="cat.complementary">Complementary</option>
+                <option value="split" data-i18n="cat.split">Split-complementary</option>
+                <option value="triadic" data-i18n="cat.triadic">Triadic</option>
+                <option value="tetradic" data-i18n="cat.tetradic">Tetradic</option>
+                <option value="square" data-i18n="cat.square">Square</option>
+                <option value="mono" data-i18n="cat.mono">Monochromatic</option>
+                <option value="shades" data-i18n="cat.shades">Shades</option>
+                <option value="similar" data-i18n="cat.similar">Similar colors</option>
+                <option value="accessibility" data-i18n="cat.accessibility">Accessibility</option>
+                <option value="journal" data-i18n="cat.journal">Journal-style combos</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div id="suggestList"></div>
+      </section>
+
+      <!-- ========================= JOURNAL PALETTES ========================= -->
+      <section class="view hidden" id="view-journals">
+        <div class="view-head">
+          <h1 data-i18n="journals.title">Journal Palettes</h1>
+          <p class="sub" data-i18n="journals.sub"></p>
+        </div>
+        <div class="suggest-section-head">
+          <h2 data-i18n="journals.curatedHead">Recommended high-impact palettes</h2>
+          <p class="sub" data-i18n="journals.curatedSub"></p>
+        </div>
+        <div class="harmony-list" id="journalCurated"></div>
+        <div class="suggest-section-head">
+          <h2 data-i18n="journals.myHead">My journal color library</h2>
+          <p class="sub" data-i18n="journals.mySub"></p>
+        </div>
+        <div class="preset-list" id="journalSaved"></div>
+        <p class="empty hidden" id="journalsEmpty" data-i18n="journals.empty"></p>
+      </section>
+
+      <!-- ============================ EXTRACT ============================ -->
+      <section class="view hidden" id="view-extract">
+        <div class="view-head">
+          <h1 data-i18n="extract.title">Extract palette from a PDF</h1>
+          <p class="sub" data-i18n="extract.sub"></p>
+        </div>
+        <div class="card">
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="pdfFile" accept="application/pdf" hidden />
+            <div class="dz-inner">
+              <div class="dz-title" data-i18n="dz.title">Drop a PDF here</div>
+              <div class="dz-sub"><span data-i18n="dz.or">or</span> <button class="link-btn" id="browseBtn" data-i18n="dz.choose">choose a file</button></div>
+            </div>
+          </div>
+          <div class="extract-controls">
+            <label><span data-i18n="ex.colors">Colors</span>
+              <select id="extractK">
+                <option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option>
+              </select>
+            </label>
+            <label><span data-i18n="ex.pages">Pages</span>
+              <select id="extractPages">
+                <option value="1" data-i18n="pages.1">First page</option>
+                <option value="3" selected data-i18n="pages.3">First 3</option>
+                <option value="6" data-i18n="pages.6">First 6</option>
+              </select>
+            </label>
+            <span class="status" id="extractStatus"></span>
+          </div>
+        </div>
+        <div class="card hidden" id="extractResultCard">
+          <h2 data-i18n="ex.resultTitle">Extracted palette</h2>
+          <div class="swatch-strip" id="extractStrip"></div>
+          <div class="scheme-roles" id="schemeRoles"></div>
+
+          <div class="journal-meta">
+            <div class="jm-head" data-i18n="ex.detected">Auto-detected (approximate, editable)</div>
+            <div class="jm-grid">
+              <label><span data-i18n="ex.journal">Journal</span><input type="text" id="jmName" /></label>
+              <label><span data-i18n="ex.abbrev">Abbrev.</span><input type="text" id="jmAbbrev" /></label>
+              <label><span data-i18n="ex.quartile">JCR quartile</span>
+                <select id="jmQuartile">
+                  <option value="">—</option>
+                  <option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option>
+                </select>
+              </label>
+              <label><span data-i18n="ex.if">Impact factor</span><input type="text" id="jmIF" /></label>
+              <label><span data-i18n="ex.category">Category</span><input type="text" id="jmCat" /></label>
+              <label class="jm-doi"><span data-i18n="ex.doi">DOI</span><input type="text" id="jmDOI" /></label>
+            </div>
+          </div>
+
+          <div class="export-row">
+            <button class="btn primary" id="loadExtracted" data-i18n="ex.load">Load into Build</button>
+            <button class="btn" id="saveExtracted" data-i18n="ex.saveDots">Save to library…</button>
+            <button class="btn" id="saveExtractedJournal" data-i18n="ex.saveJournal">Save to journal library</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= COLOR LIBRARY ========================= -->
+      <section class="view hidden" id="view-colors">
+        <div class="view-head">
+          <h1 data-i18n="colors.title">Color Library</h1>
+          <p class="sub" data-i18n="colors.sub"></p>
+        </div>
+        <div class="card">
+          <div class="input-row">
+            <input type="text" id="colorLibInput" data-i18n-ph="colors.addPh" spellcheck="false" />
+            <input type="color" id="colorLibPicker" value="#1b3a5c" />
+            <button class="btn primary" id="colorLibAdd" data-i18n="common.add">Add</button>
+          </div>
+          <div class="colorlib-meta" id="colorLibCount"></div>
+        </div>
+        <div class="color-grid" id="colorGrid"></div>
+        <p class="empty hidden" id="colorsEmpty" data-i18n="colors.empty"></p>
+      </section>
+
+      <!-- ========================= SAVED PALETTES ========================= -->
+      <section class="view hidden" id="view-library">
+        <div class="view-head">
+          <h1 data-i18n="palettes.title">Saved palettes</h1>
+          <p class="sub"><span data-i18n="palettes.sub"></span> <button class="link-btn" id="revealLib" data-i18n="common.showInFinder">Show file in Finder</button></p>
+        </div>
+        <div class="preset-list" id="savedList"></div>
+        <p class="empty hidden" id="savedEmpty" data-i18n="palettes.empty"></p>
+      </section>
+
+      <!-- ============================ GUIDE ============================ -->
+      <section class="view hidden" id="view-guide">
+        <div class="view-head">
+          <h1 data-i18n="guide.title">Color guide</h1>
+          <p class="sub" data-i18n="guide.sub"></p>
+        </div>
+        <div class="card prose" id="guideProse"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="saveModal">
+    <div class="modal">
+      <h2 data-i18n="modal.title">Save palette</h2>
+      <label class="field"><span data-i18n="modal.name">Name</span><input type="text" id="saveName" data-i18n-ph="modal.namePh" /></label>
+      <label class="field"><span data-i18n="modal.tags">Tags</span><input type="text" id="saveTags" data-i18n-ph="modal.tagsPh" /></label>
+      <label class="field"><span data-i18n="modal.source">Source</span><input type="text" id="saveSource" data-i18n-ph="modal.sourcePh" /></label>
+      <div class="modal-actions">
+        <button class="btn ghost" id="saveCancel" data-i18n="common.cancel">Cancel</button>
+        <button class="btn primary" id="saveConfirm" data-i18n="build.saveToLib">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="vendor/pdfjs/pdf.js"></script>
+  <script src="data/presets.js"></script>
+  <script src="data/journals.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/color-utils.js"></script>
+  <script src="js/vision.js"></script>
+  <script src="js/cluster.js"></script>
+  <script src="js/exporters.js"></script>
+  <script src="js/pdf-extract.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

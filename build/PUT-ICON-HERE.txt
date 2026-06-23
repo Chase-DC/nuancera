@@ -1,0 +1,10 @@
+The app icon goes here as `icon.png` (square, 1024×1024 recommended).
+
+Easiest: save your icon image into the Deepsee-v4 folder as `icon-src.png`
+and ask Claude to process it — it will pad it square, resize to 1024×1024,
+and write `build/icon.png` for you.
+
+Or do it yourself in Terminal (macOS), from the PaletteStudio folder:
+    sips -z 1024 1024 /path/to/your-image.png --out build/icon.png
+
+After the icon is in place, run `npm run dist` to bake it into the .app.
