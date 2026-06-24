@@ -2,7 +2,7 @@
   "name": "nuancera",
   "productName": "Nuancera",
   "version": "0.0.6",
-  "description": "Nuancera — a fully offline macOS color-palette tool for academic publishing (Nature/Science/Cell-style figures and slides).",
+  "description": "Fully offline macOS palette tool for scientific figures, journal graphics, PDF color extraction, and publication-ready exports.",
   "author": "Chase",
   "license": "MIT",
   "main": "main.js",
