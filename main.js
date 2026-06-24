@@ -29,6 +29,10 @@ function libraryPath() {
   return path.join(app.getPath('userData'), 'palette-library.json');
 }
 
+function settingsPath() {
+  return path.join(app.getPath('userData'), 'settings.json');
+}
+
 let mainWindow = null;
 
 function createWindow() {
@@ -39,7 +43,7 @@ function createWindow() {
     minHeight: 640,
     title: 'Nuancera',
     backgroundColor: '#f7f6f3',
-    titleBarStyle: 'hiddenInset', // refined, native macOS look
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,   // renderer cannot touch Node directly
@@ -109,6 +113,31 @@ ipcMain.handle('library:reveal', async () => {
   if (fs.existsSync(p)) shell.showItemInFolder(p);
   else shell.openPath(path.dirname(p));
   return { ok: true };
+});
+
+// ---------------------------------------------------------------------------
+// IPC: user settings
+// ---------------------------------------------------------------------------
+ipcMain.handle('settings:load', async () => {
+  try {
+    const p = settingsPath();
+    if (!fs.existsSync(p)) return { ok: true, data: {} };
+    const raw = fs.readFileSync(p, 'utf8');
+    return { ok: true, data: JSON.parse(raw) };
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+});
+
+ipcMain.handle('settings:save', async (_evt, data) => {
+  try {
+    const p = settingsPath();
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, JSON.stringify(data || {}, null, 2), 'utf8');
+    return { ok: true, path: p };
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
 });
 
 // ---------------------------------------------------------------------------
