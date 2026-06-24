@@ -25,6 +25,7 @@
     "mac": {
       "category": "public.app-category.graphics-design",
       "icon": "build/icon.png",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
       "target": [
         { "target": "dmg", "arch": ["arm64"] },
         { "target": "dir", "arch": ["arm64"] }
