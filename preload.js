@@ -14,6 +14,10 @@ contextBridge.exposeInMainWorld('api', {
   libraryPath: () => ipcRenderer.invoke('library:path'),
   revealLibrary: () => ipcRenderer.invoke('library:reveal'),
 
+  // Persistent user settings (local JSON on disk)
+  loadSettings: () => ipcRenderer.invoke('settings:load'),
+  saveSettings: (data) => ipcRenderer.invoke('settings:save', data),
+
   // Exports through native Save dialog
   exportText: (defaultName, content) =>
     ipcRenderer.invoke('export:text', { defaultName, content }),
