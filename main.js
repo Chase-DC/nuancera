@@ -33,6 +33,19 @@ function settingsPath() {
   return path.join(app.getPath('userData'), 'settings.json');
 }
 
+function readSettings() {
+  const p = settingsPath();
+  if (!fs.existsSync(p)) return {};
+  return JSON.parse(fs.readFileSync(p, 'utf8'));
+}
+
+function writeSettings(data) {
+  const p = settingsPath();
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, JSON.stringify(data || {}, null, 2), 'utf8');
+  return p;
+}
+
 let mainWindow = null;
 
 function createWindow() {
@@ -120,20 +133,23 @@ ipcMain.handle('library:reveal', async () => {
 // ---------------------------------------------------------------------------
 ipcMain.handle('settings:load', async () => {
   try {
-    const p = settingsPath();
-    if (!fs.existsSync(p)) return { ok: true, data: {} };
-    const raw = fs.readFileSync(p, 'utf8');
-    return { ok: true, data: JSON.parse(raw) };
+    return { ok: true, data: readSettings() };
   } catch (err) {
     return { ok: false, error: String(err) };
   }
 });
 
+ipcMain.on('settings:load-sync', (event) => {
+  try {
+    event.returnValue = { ok: true, data: readSettings() };
+  } catch (err) {
+    event.returnValue = { ok: false, error: String(err) };
+  }
+});
+
 ipcMain.handle('settings:save', async (_evt, data) => {
   try {
-    const p = settingsPath();
-    fs.mkdirSync(path.dirname(p), { recursive: true });
-    fs.writeFileSync(p, JSON.stringify(data || {}, null, 2), 'utf8');
+    const p = writeSettings(data);
     return { ok: true, path: p };
   } catch (err) {
     return { ok: false, error: String(err) };
