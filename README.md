@@ -27,7 +27,7 @@ node -v
 **第 2 步 — 克隆并安装依赖（一次性，需要联网）**
 
 ```bash
-git clone https://github.com/<你的用户名>/nuancera.git
+git clone https://github.com/Chase-DC/nuancera.git
 cd nuancera
 npm install
 ```
@@ -125,7 +125,7 @@ git push -u origin main
 1. Install **Node.js LTS (macOS arm64)** once; verify with `node -v`.
 2. Clone & install:
    ```bash
-   git clone https://github.com/<your-username>/nuancera.git
+   git clone https://github.com/Chase-DC/nuancera.git
    cd nuancera
    npm install
    ```
