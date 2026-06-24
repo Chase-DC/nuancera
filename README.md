@@ -13,23 +13,26 @@
 <a name="中文"></a>
 ## 中文
 
-### 1. 从零运行（首次设置）
+### 1. 安装与运行
+
+> 想直接用成品？如果作者在本仓库 **Releases** 页发布了 `.dmg`，下载拖进「应用程序」即可，无需以下步骤。否则按下面从源码运行。
 
 **第 1 步 — 安装 Node.js（一次性，需要联网）**
-到 Node.js 官网下载 macOS **Apple Silicon (arm64)** 的 LTS 安装包并安装。终端验证：
+到 [nodejs.org](https://nodejs.org) 下载 macOS **Apple Silicon (arm64)** 的 LTS 安装包并安装。终端验证：
 
 ```bash
 node -v
 ```
 
-**第 2 步 — 安装依赖（一次性，需要联网）**
+**第 2 步 — 克隆并安装依赖（一次性，需要联网）**
 
 ```bash
-cd "/Users/chasedc/Deepsee-v4/PaletteStudio"
+git clone https://github.com/<你的用户名>/nuancera.git
+cd nuancera
 npm install
 ```
 
-会下载 Electron 和 pdf.js 到项目里；`postinstall` 自动把 pdf.js 拷到 `renderer/vendor/pdfjs/`。**这是最后一次用到网络。**
+`npm install` 会下载 Electron 和 pdf.js；`postinstall` 自动把 pdf.js 拷到 `renderer/vendor/pdfjs/`。**这是最后一次用到网络。**
 
 **第 3 步 — 启动**
 
@@ -39,7 +42,7 @@ npm start
 
 窗口弹出后即可**关掉 Wi-Fi**，所有功能照常。
 
-**装进「应用程序」（可双击的图标）**
+**打包成可双击的 App**
 
 ```bash
 npm run dist
@@ -82,15 +85,13 @@ npm run dist
 
 一个可读的本地 JSON（同时存「已存配色」和「颜色库」）。在「已存配色」里点「在访达中显示文件」可定位。绝不上传。
 
-### 6. 在 GitHub 上以 MIT 协议开源发布
+### 6. 开源发布与「可下载成品」
 
-本项目已含 `LICENSE`（MIT）。发布步骤：
+本项目已含 `LICENSE`（MIT）。
 
-1. 在 GitHub 网页新建一个空仓库，名为 `nuancera`（不要勾选自动生成 README / .gitignore / license）。
-2. 在项目目录执行：
+**推送源码**（在项目根目录执行；先在 GitHub 新建一个空仓库 `nuancera`，不要勾选自动生成 README/.gitignore/license）：
 
 ```bash
-cd "/Users/chasedc/Deepsee-v4/PaletteStudio"
 git init
 git add .
 git commit -m "Nuancera v0.06"
@@ -101,6 +102,14 @@ git push -u origin main
 
 `.gitignore` 已排除 `node_modules/`、`dist/`、`renderer/vendor/`，别人 clone 后 `npm install && npm start` 即可运行。
 
+**让 Releases 不为空（提供可下载的 App）**：GitHub 的 **Releases / Packages 默认是空的**，需要你手动发布。源码仓库不会自动生成成品。要给用户一个直接下载的 `.dmg`：
+
+1. `npm run dist` 生成 `dist/Nuancera-0.0.6-arm64.dmg`
+2. GitHub 仓库页 → **Releases** → **Draft a new release** → 填 tag（如 `v0.0.6`）
+3. 把那个 `.dmg` 拖到 **Attach binaries** 区域 → **Publish release**
+
+发布后，Releases 页就会有可下载的成品 App（注意未签名，用户首次需右键打开）。
+
 ### 7. 版本号规则
 
 每次调整版本号 **+0.01**（v0.01 → v0.02 …），同时更新 `renderer/js/i18n.js` 里的 `APP_VERSION` 和 `package.json` 的 `version`。
@@ -110,9 +119,17 @@ git push -u origin main
 <a name="english"></a>
 ## English
 
-### 1. Run from scratch
+### 1. Install & run
+> Prefer a ready-made app? If the author published a `.dmg` under **Releases**, just download it and drag it to Applications — no steps below needed. Otherwise run from source:
+
 1. Install **Node.js LTS (macOS arm64)** once; verify with `node -v`.
-2. `cd "/Users/chasedc/Deepsee-v4/PaletteStudio" && npm install` (downloads Electron + pdf.js; postinstall bundles pdf.js locally — the last time the internet is used).
+2. Clone & install:
+   ```bash
+   git clone https://github.com/<your-username>/nuancera.git
+   cd nuancera
+   npm install
+   ```
+   (downloads Electron + pdf.js; postinstall bundles pdf.js locally — the last time the internet is used).
 3. `npm start`. Then you can turn Wi-Fi off entirely.
 4. Optional double-click app: `npm run dist` → open the `.dmg` in `dist/` and drag **Nuancera** to Applications. First launch of the unsigned app: right-click → Open → Open (once).
 
@@ -137,10 +154,9 @@ Bundled pdf.js renders pages locally → noise pixels (white background, black i
 ### 5. Where data lives
 `~/Library/Application Support/Nuancera/palette-library.json` — a readable local JSON holding both saved palettes and the color library. Never uploaded.
 
-### 6. Open-sourcing on GitHub (MIT)
-This repo includes an MIT `LICENSE`. Create an empty `nuancera` repo on GitHub, then:
+### 6. Publishing on GitHub + downloadable build
+This repo includes an MIT `LICENSE`. Create an empty `nuancera` repo on GitHub (no auto README/.gitignore/license), then from the project root:
 ```bash
-cd "/Users/chasedc/Deepsee-v4/PaletteStudio"
 git init && git add . && git commit -m "Nuancera v0.06"
 git branch -M main
 git remote add origin https://github.com/<your-username>/nuancera.git
@@ -148,12 +164,14 @@ git push -u origin main
 ```
 `.gitignore` excludes `node_modules/`, `dist/`, `renderer/vendor/`; a fresh clone just needs `npm install && npm start`.
 
+**Releases / Packages are empty by default** — a source repo doesn't auto-generate builds. To offer a downloadable app: run `npm run dist`, then on GitHub go to **Releases → Draft a new release**, set a tag (e.g. `v0.0.6`), attach `dist/Nuancera-0.0.6-arm64.dmg`, and **Publish**.
+
 ### 7. Versioning
 Bump **+0.01** each change; keep `APP_VERSION` in `renderer/js/i18n.js` and `version` in `package.json` in sync.
 
 ### Project layout
 ```
-PaletteStudio/
+nuancera/
 ├── package.json · main.js · preload.js · LICENSE · README.md
 ├── build/icon.png                 app icon
 ├── scripts/  copy-vendor.js · build-presets.js
