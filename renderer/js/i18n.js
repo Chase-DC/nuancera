@@ -16,7 +16,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = 'v0.06';
+  const APP_VERSION = 'v0.07';
   const LANGS = ['zh', 'en', 'fr'];
   let lang = 'zh'; // default: Chinese first
 
