@@ -7,6 +7,31 @@
  */
 const { contextBridge, ipcRenderer } = require('electron');
 
+const LANG_KEY = 'nuancera.lang';
+const LANGS = ['zh', 'en', 'fr'];
+let cachedSettings = {};
+
+// Seed the renderer's existing language loader before app.js runs. This keeps
+// the UI code simple while making the preference survive app updates and moves.
+try {
+  const res = ipcRenderer.sendSync('settings:load-sync');
+  cachedSettings = (res && res.ok && res.data) ? res.data : {};
+  if (LANGS.includes(cachedSettings.language)) {
+    localStorage.setItem(LANG_KEY, cachedSettings.language);
+  }
+} catch (_) {}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const langSelect = document.getElementById('langSelect');
+  if (!langSelect) return;
+  langSelect.addEventListener('change', () => {
+    const language = langSelect.value;
+    if (!LANGS.includes(language)) return;
+    cachedSettings = { ...cachedSettings, language };
+    ipcRenderer.invoke('settings:save', cachedSettings).catch(() => {});
+  });
+});
+
 contextBridge.exposeInMainWorld('api', {
   // Persistent saved-palette library (local JSON on disk)
   loadLibrary: () => ipcRenderer.invoke('library:load'),
