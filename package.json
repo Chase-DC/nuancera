@@ -1,19 +1,22 @@
 {
   "name": "nuancera",
   "productName": "Nuancera",
-  "version": "0.0.6",
-  "description": "Fully offline macOS palette tool for scientific figures, journal graphics, PDF color extraction, and publication-ready exports.",
+  "version": "0.0.7",
+  "description": "Fully offline desktop palette tool for scientific figures, journal graphics, PDF color extraction, and publication-ready exports.",
   "author": "Chase",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
     "postinstall": "node scripts/copy-vendor.js",
     "start": "electron .",
-    "dist": "electron-builder --mac --arm64"
+    "dist": "electron-builder --mac --arm64",
+    "dist:mac": "electron-builder --mac --arm64",
+    "dist:win": "electron-builder --win --x64"
   },
   "build": {
     "appId": "com.chase.nuancera",
     "productName": "Nuancera",
+    "npmRebuild": false,
     "files": [
       "main.js",
       "preload.js",
@@ -26,6 +29,21 @@
         { "target": "dmg", "arch": ["arm64"] },
         { "target": "dir", "arch": ["arm64"] }
       ]
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     }
   },
   "dependencies": {
