@@ -32,9 +32,20 @@ jobs:
       - name: Build Microsoft Store AppX
         run: npm run dist:store -- --publish never
 
+      - name: Prepare MSIX artifact
+        run: |
+          appx_file="$(find dist -maxdepth 1 -name '*store-x64.appx' -print -quit)"
+          if [ -z "$appx_file" ]; then
+            echo "No Store AppX package found" >&2
+            exit 1
+          fi
+          msix_file="${appx_file%.appx}.msix"
+          cp "$appx_file" "$msix_file"
+          echo "Prepared $msix_file"
+
       - name: Upload Store package artifact
         uses: actions/upload-artifact@v4
         with:
           name: Nuancera-${{ github.sha }}-store-x64
-          path: dist/*store-x64.appx
+          path: dist/*store-x64.msix
           if-no-files-found: error

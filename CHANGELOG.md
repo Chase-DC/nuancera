@@ -7,6 +7,18 @@ This project uses two version tracks:
 
 GitHub Releases are updated only when explicitly requested. A public release entry summarizes the local-only iteration entries since the previous public release.
 
+## 0.0.8 - Public release
+
+Summarizes changes since `0.0.7`.
+
+- Added startup update checks against GitHub Releases, including release notes and actions for update now, ignore this version, or remind later.
+- Changed app identity and publisher-facing metadata to Duo CAI.
+- Added Windows packaging metadata for Duo CAI and current-user install behavior.
+- Added Microsoft Store packaging configuration using the Nuancera Partner Center identity.
+- Added a manual GitHub Actions workflow to build the Microsoft Store package on Windows.
+- Updated documentation from macOS-only/offline-only wording to macOS + Windows, local-first, and Store-aware packaging.
+- Included the current renderer and PDF extraction improvements from local iteration work.
+
 ## 0.0.7-local.1 - Local iteration
 
 - Added startup update checks against GitHub Releases, with release notes and actions for update now, ignore this version, or remind later.

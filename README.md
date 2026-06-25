@@ -6,7 +6,7 @@
 >
 > **Nuancera** is a local-first desktop palette tool for scientific figures, journal graphics, and academic slides. It brings publication-grade palettes, colorblind-safety checks, PDF color extraction, palette management, and multi-format exports into one local app.
 
-Current version / 当前版本: **0.0.7-local.1**
+Current version / 当前版本: **0.0.8**
 
 ---
 

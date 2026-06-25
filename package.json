@@ -1,7 +1,7 @@
 {
   "name": "nuancera",
   "productName": "Nuancera",
-  "version": "0.0.7-local.1",
+  "version": "0.0.8",
   "description": "Local-first desktop palette tool for scientific figures, journal graphics, PDF color extraction, and publication-ready exports.",
   "author": "Duo CAI",
   "license": "MIT",
