@@ -61,6 +61,7 @@ Only when the user explicitly asks to update GitHub Releases:
 
 - App name: Nuancera
 - macOS target: Apple Silicon arm64
+- macOS DMG builds run `scripts/sign-mac-ad-hoc.js` through the electron-builder `afterPack` hook to sign and verify the full `.app` bundle before DMG packaging. This prevents damaged-app Gatekeeper failures from incomplete ad-hoc signatures. This is not a substitute for Apple Developer ID signing and notarization.
 - Windows target: x64 NSIS installer
 - Microsoft Store target: x64 AppX built by a manual GitHub Actions workflow on Windows
 - Release assets should be named clearly by product, version, platform, and architecture.

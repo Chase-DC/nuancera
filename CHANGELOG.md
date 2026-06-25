@@ -16,6 +16,7 @@ Summarizes changes since `0.0.7`.
 - Added Windows packaging metadata for Duo CAI and current-user install behavior.
 - Added Microsoft Store packaging configuration using the Nuancera Partner Center identity.
 - Fixed Microsoft Store package manifest generation to use Windows `MinVersion` `10.0.17763.0`, avoiding Partner Center rejection for `MinVersion <= 10.0.17134.0`.
+- Fixed macOS DMG generation by ad-hoc signing the full app bundle before packaging, avoiding damaged-app Gatekeeper failures caused by an incomplete bundle signature.
 - Added a manual GitHub Actions workflow to build the Microsoft Store package on Windows.
 - Updated documentation from macOS-only/offline-only wording to macOS + Windows, local-first, and Store-aware packaging.
 - Included the current renderer and PDF extraction improvements from local iteration work.

@@ -18,6 +18,7 @@
     "appId": "com.duocai.nuancera",
     "productName": "Nuancera",
     "npmRebuild": false,
+    "afterPack": "scripts/sign-mac-ad-hoc.js",
     "appxManifestCreated": "scripts/patch-appx-manifest.js",
     "files": [
       "main.js",
