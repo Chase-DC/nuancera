@@ -2,9 +2,9 @@
  * Prepare package metadata for Microsoft Store AppX builds.
  *
  * The normal local iteration version can be a SemVer prerelease such as
- * 0.0.7-local.1, but AppX manifests require a numeric package version.
- * For Store packages, map it to 0.0.7.0. Public releases map similarly,
- * for example 0.0.8 -> 0.0.8.0.
+ * 0.0.7-local.1, but electron-builder requires package.json.version to be
+ * a valid three-part SemVer value. For Store packages, map it to 0.0.7;
+ * electron-builder will then write 0.0.7.0 into the AppX manifest.
  */
 const fs = require('fs');
 
@@ -13,7 +13,7 @@ function storeVersionFrom(raw) {
   if (!match) {
     throw new Error(`Cannot derive Store version from ${raw}`);
   }
-  return `${match[1]}.${match[2]}.${match[3]}.0`;
+  return `${match[1]}.${match[2]}.${match[3]}`;
 }
 
 function updateJson(file) {

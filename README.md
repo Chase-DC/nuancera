@@ -166,7 +166,7 @@ macOS 本机无法直接生成 AppX；可使用 GitHub Actions 中的 **Build Mi
 
 这个 workflow 只是把 GitHub Actions 当作 Windows 构建机，不负责发布 GitHub Release。
 
-Store 包要求数字版本号。workflow 会先运行 `scripts/prepare-store-version.js`，把本地迭代版本临时映射为 Store 兼容版本，例如 `0.0.7-local.1` 会映射为 `0.0.7.0`。这个映射只发生在 GitHub Actions 构建环境中，不改变本地迭代版本。
+Store 包要求数字版本号。workflow 会先运行 `scripts/prepare-store-version.js`，把本地迭代版本临时映射为三段包版本，例如 `0.0.7-local.1` 会映射为 `0.0.7`；electron-builder 会在 AppX manifest 中写入 Store 兼容的 `0.0.7.0`。这个映射只发生在 GitHub Actions 构建环境中，不改变本地迭代版本。
 
 ### 版本号规则
 
@@ -345,7 +345,7 @@ Recommended flow:
 
 This workflow treats GitHub Actions as the Windows build machine. It does not publish a GitHub Release.
 
-Store packages require numeric package versions. The workflow first runs `scripts/prepare-store-version.js`, temporarily mapping local iteration versions to Store-compatible versions, for example `0.0.7-local.1` to `0.0.7.0`. This mapping happens only inside the GitHub Actions build environment and does not change the local iteration version.
+Store packages require numeric package versions. The workflow first runs `scripts/prepare-store-version.js`, temporarily mapping local iteration versions to three-part package versions, for example `0.0.7-local.1` to `0.0.7`; electron-builder then writes the Store-compatible `0.0.7.0` into the AppX manifest. This mapping happens only inside the GitHub Actions build environment and does not change the local iteration version.
 
 ### Versioning
 

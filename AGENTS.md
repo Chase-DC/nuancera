@@ -37,7 +37,7 @@ This repository is developed with local-first iteration.
 - Use the manual GitHub Actions workflow `Build Microsoft Store AppX` to build the Store package on `windows-latest`.
 - The workflow output artifact is the package to upload to Microsoft Partner Center.
 - Treat GitHub Actions as the Windows build machine, not as a release publishing mechanism.
-- Microsoft Store package versions must be compatible with Store package version rules. The workflow runs `scripts/prepare-store-version.js` to map local prerelease versions such as `0.0.7-local.1` to Store-compatible package identity versions such as `0.0.7.0` during Store packaging.
+- Microsoft Store package versions must be compatible with Store package version rules. The workflow runs `scripts/prepare-store-version.js` to map local prerelease versions such as `0.0.7-local.1` to three-part package versions such as `0.0.7`; electron-builder writes the Store-compatible AppX identity version as `0.0.7.0`.
 
 ## Explicit Release Flow
 
