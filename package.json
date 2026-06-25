@@ -18,6 +18,7 @@
     "appId": "com.duocai.nuancera",
     "productName": "Nuancera",
     "npmRebuild": false,
+    "appxManifestCreated": "scripts/patch-appx-manifest.js",
     "files": [
       "main.js",
       "preload.js",

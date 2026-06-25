@@ -15,6 +15,7 @@ Summarizes changes since `0.0.7`.
 - Changed app identity and publisher-facing metadata to Duo CAI.
 - Added Windows packaging metadata for Duo CAI and current-user install behavior.
 - Added Microsoft Store packaging configuration using the Nuancera Partner Center identity.
+- Fixed Microsoft Store package manifest generation to use Windows `MinVersion` `10.0.17763.0`, avoiding Partner Center rejection for `MinVersion <= 10.0.17134.0`.
 - Added a manual GitHub Actions workflow to build the Microsoft Store package on Windows.
 - Updated documentation from macOS-only/offline-only wording to macOS + Windows, local-first, and Store-aware packaging.
 - Included the current renderer and PDF extraction improvements from local iteration work.
@@ -25,6 +26,7 @@ Summarizes changes since `0.0.7`.
 - Changed app identity and publisher-facing metadata from Chase to Duo CAI.
 - Added Windows packaging metadata for Duo CAI and current-user install behavior.
 - Added Microsoft Store AppX packaging configuration using Partner Center identity values for Nuancera.
+- Fixed Store AppX manifest generation so generated packages target Windows `10.0.17763.0` or later.
 - Added a manual GitHub Actions workflow to build the Microsoft Store AppX package on Windows.
 - Updated README wording from macOS-only/offline-only to macOS + Windows, local-first, and Store-aware packaging.
 - Preserved and built against the current local renderer and PDF extraction updates from parallel local iteration work.

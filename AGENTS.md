@@ -38,6 +38,8 @@ This repository is developed with local-first iteration.
 - The workflow output artifact is the package to upload to Microsoft Partner Center.
 - Treat GitHub Actions as the Windows build machine, not as a release publishing mechanism.
 - Microsoft Store package versions must be compatible with Store package version rules. The workflow runs `scripts/prepare-store-version.js` to map local prerelease versions such as `0.0.7-local.1` to three-part package versions such as `0.0.7`; electron-builder writes the Store-compatible AppX identity version as `0.0.7.0`.
+- Store packages must patch the generated AppX manifest through `scripts/patch-appx-manifest.js` so `TargetDeviceFamily` uses Windows `MinVersion` and `MaxVersionTested` `10.0.17763.0`. Partner Center rejects MSIX packages targeting `MinVersion <= 10.0.17134.0`.
+- Electron full-trust desktop packages declare the restricted `runFullTrust` capability. Do not remove it casually; explain it in Partner Center Submission options as required for launching the packaged Nuancera desktop application process.
 
 ## Explicit Release Flow
 
