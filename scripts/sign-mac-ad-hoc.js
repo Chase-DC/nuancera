@@ -14,8 +14,6 @@ module.exports = async function signMacAdHoc(context) {
     '--deep',
     '--sign',
     '-',
-    '--options',
-    'runtime',
     appPath,
   ], { stdio: 'inherit' });
 
