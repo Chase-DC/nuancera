@@ -39,6 +39,7 @@ This repository is developed with local-first iteration.
 - Treat GitHub Actions as the Windows build machine, not as a release publishing mechanism.
 - Microsoft Store package versions must be compatible with Store package version rules. The workflow runs `scripts/prepare-store-version.js` to map local prerelease versions such as `0.0.7-local.1` to three-part package versions such as `0.0.7`; electron-builder writes the Store-compatible AppX identity version as `0.0.7.0`.
 - Store packages must patch the generated AppX manifest through `scripts/patch-appx-manifest.js` so `TargetDeviceFamily` uses Windows `MinVersion` and `MaxVersionTested` `10.0.17763.0`. Partner Center rejects MSIX packages targeting `MinVersion <= 10.0.17134.0`.
+- Store/AppX tile images must live in `build/appx/` as `StoreLogo.png`, `Square44x44Logo.png`, `Square150x150Logo.png`, and `Wide310x150Logo.png`. If this folder is missing, electron-builder falls back to default `SampleAppx` images and Microsoft Store certification can fail policy `10.1.1.11 On Device Tiles`.
 - Electron full-trust desktop packages declare the restricted `runFullTrust` capability. Do not remove it casually; explain it in Partner Center Submission options as required for launching the packaged Nuancera desktop application process.
 
 ## Explicit Release Flow
