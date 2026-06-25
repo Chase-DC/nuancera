@@ -2,7 +2,8 @@
  * i18n.js — translations + tiny runtime for Palette Studio.
  *
  * APP_VERSION is the single source of truth for the version stamp shown in the
- * title bar. Bump it +0.01 on each adjustment round.
+ * title bar. Local-only iteration builds use SemVer prerelease form, such as
+ * 0.0.7-local.1, while public releases use 0.0.8, 0.0.9, etc.
  *
  * Usage:
  *   I18N.setLang('zh');         // 'en' | 'zh' | 'fr'
@@ -16,14 +17,14 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = 'v0.07';
+  const APP_VERSION = 'v0.0.7-local.1';
   const LANGS = ['zh', 'en', 'fr'];
   let lang = 'zh'; // default: Chinese first
 
   const DICT = {
     en: {
       'lang.label': 'Language',
-      'tb.offline': 'offline',
+      'tb.offline': 'local-first',
 
       'nav.build': 'Build',
       'nav.presets': 'Presets',
@@ -46,7 +47,7 @@
       'cb.risky': 'colorblind-risk',
 
       'build.title': 'Build a palette',
-      'build.sub': 'Enter colors in any format, convert instantly, and assemble a 2–8 color palette.',
+      'build.sub': 'Enter colors in any format, convert instantly, and assemble a 2–16 color palette.',
       'build.inputCard': 'Color input & conversion',
       'build.inputPh': '#1B3A5C  ·  27, 58, 92  ·  hsl(210,55%,23%)',
       'build.addToPalette': 'Add to palette',
@@ -146,6 +147,8 @@
       'pages.1': 'First page',
       'pages.3': 'First 3',
       'pages.6': 'First 6',
+      'pages.12': 'First 12',
+      'pages.all': 'All pages',
       'ex.resultTitle': 'Extracted palette',
       'ex.load': 'Load into Build',
       'ex.saveDots': 'Save to library…',
@@ -183,7 +186,7 @@
       'modal.sourcePh': 'filename or note',
 
       'toast.copied': 'Copied {v}',
-      'toast.full': 'Palette is full (max 8).',
+      'toast.full': 'Palette is full (max 16).',
       'toast.cleared': 'Cleared unlocked colors',
       'toast.savedLib': 'Saved to library',
       'toast.deleted': 'Deleted',
@@ -220,7 +223,7 @@
 
     zh: {
       'lang.label': '语言',
-      'tb.offline': '离线',
+      'tb.offline': '本地优先',
 
       'nav.build': '构建',
       'nav.presets': '预设库',
@@ -243,7 +246,7 @@
       'cb.risky': '色盲风险',
 
       'build.title': '构建配色',
-      'build.sub': '以任意格式输入颜色，即时转换，并组合 2–8 个颜色的配色方案。',
+      'build.sub': '以任意格式输入颜色，即时转换，并组合 2–16 个颜色的配色方案。',
       'build.inputCard': '颜色输入与转换',
       'build.inputPh': '#1B3A5C  ·  27, 58, 92  ·  hsl(210,55%,23%)',
       'build.addToPalette': '加入配色',
@@ -343,6 +346,8 @@
       'pages.1': '第 1 页',
       'pages.3': '前 3 页',
       'pages.6': '前 6 页',
+      'pages.12': '前 12 页',
+      'pages.all': '全部页数',
       'ex.resultTitle': '提取出的配色',
       'ex.load': '载入构建',
       'ex.saveDots': '存入配色库…',
@@ -380,7 +385,7 @@
       'modal.sourcePh': '文件名或备注',
 
       'toast.copied': '已复制 {v}',
-      'toast.full': '配色已满（最多 8 个）。',
+      'toast.full': '配色已满（最多 16 个）。',
       'toast.cleared': '已清除未锁定的颜色',
       'toast.savedLib': '已存入配色库',
       'toast.deleted': '已删除',
@@ -417,7 +422,7 @@
 
     fr: {
       'lang.label': 'Langue',
-      'tb.offline': 'hors ligne',
+      'tb.offline': 'local-first',
 
       'nav.build': 'Composer',
       'nav.presets': 'Préréglages',
@@ -440,7 +445,7 @@
       'cb.risky': 'risque daltonisme',
 
       'build.title': 'Composer une palette',
-      'build.sub': 'Saisissez des couleurs dans n’importe quel format, convertissez aussitôt, et composez une palette de 2 à 8 couleurs.',
+      'build.sub': 'Saisissez des couleurs dans n’importe quel format, convertissez aussitôt, et composez une palette de 2 à 16 couleurs.',
       'build.inputCard': 'Saisie & conversion de couleur',
       'build.inputPh': '#1B3A5C  ·  27, 58, 92  ·  hsl(210,55%,23%)',
       'build.addToPalette': 'Ajouter à la palette',
@@ -540,6 +545,8 @@
       'pages.1': '1re page',
       'pages.3': '3 premières',
       'pages.6': '6 premières',
+      'pages.12': '12 premières',
+      'pages.all': 'Toutes les pages',
       'ex.resultTitle': 'Palette extraite',
       'ex.load': 'Charger dans Composer',
       'ex.saveDots': 'Enregistrer…',
@@ -577,7 +584,7 @@
       'modal.sourcePh': 'nom de fichier ou note',
 
       'toast.copied': 'Copié {v}',
-      'toast.full': 'Palette pleine (8 max).',
+      'toast.full': 'Palette pleine (16 max).',
       'toast.cleared': 'Couleurs non verrouillées effacées',
       'toast.savedLib': 'Enregistré',
       'toast.deleted': 'Supprimé',

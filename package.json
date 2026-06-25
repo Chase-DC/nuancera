@@ -1,9 +1,9 @@
 {
   "name": "nuancera",
   "productName": "Nuancera",
-  "version": "0.0.7",
-  "description": "Fully offline desktop palette tool for scientific figures, journal graphics, PDF color extraction, and publication-ready exports.",
-  "author": "Chase",
+  "version": "0.0.7-local.1",
+  "description": "Local-first desktop palette tool for scientific figures, journal graphics, PDF color extraction, and publication-ready exports.",
+  "author": "Duo CAI",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
@@ -11,10 +11,11 @@
     "start": "electron .",
     "dist": "electron-builder --mac --arm64",
     "dist:mac": "electron-builder --mac --arm64",
-    "dist:win": "electron-builder --win --x64"
+    "dist:win": "electron-builder --win --x64",
+    "dist:store": "electron-builder --win appx --x64"
   },
   "build": {
-    "appId": "com.chase.nuancera",
+    "appId": "com.duocai.nuancera",
     "productName": "Nuancera",
     "npmRebuild": false,
     "files": [
@@ -33,10 +34,25 @@
     },
     "win": {
       "icon": "build/icon.png",
+      "publisherName": "Duo CAI",
+      "requestedExecutionLevel": "asInvoker",
       "target": [
         { "target": "nsis", "arch": ["x64"] }
       ],
       "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+    },
+    "appx": {
+      "identityName": "DuoCAI.Nuancera",
+      "publisher": "CN=1F00B5D8-C2D3-4FC9-B4D3-1CF7B10D4104",
+      "publisherDisplayName": "Duo CAI",
+      "displayName": "Nuancera",
+      "applicationId": "Nuancera",
+      "languages": [
+        "zh-CN",
+        "en-US",
+        "fr-FR"
+      ],
+      "artifactName": "${productName}-${version}-store-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,

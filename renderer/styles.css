@@ -1,6 +1,6 @@
 /* ============================================================
    Palette Studio — editorial, restrained UI.
-   System font stack only (San Francisco on macOS): zero network,
+   System font stack only (San Francisco on macOS): no remote fonts,
    native-feeling, premium. Muted neutral canvas, navy accent.
    ============================================================ */
 :root {

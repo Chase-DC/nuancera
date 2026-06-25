@@ -1,0 +1,40 @@
+name: Build Microsoft Store AppX
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-store-appx:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare Store package version
+        run: node scripts/prepare-store-version.js
+
+      - name: Build Microsoft Store AppX
+        run: npm run dist:store -- --publish never
+
+      - name: Upload Store package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nuancera-${{ github.sha }}-store-x64
+          path: dist/*store-x64.appx
+          if-no-files-found: error

@@ -11,6 +11,7 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const t = (k, v) => I18N.t(k, v);
   const LANG_KEY = 'nuancera.lang';
+  const PALETTE_LIMIT = 16;
 
   const state = {
     current: CE.hexToRgb('#1b3a5c'),
@@ -91,7 +92,7 @@
     input.addEventListener('input', () => { const rgb = CE.parseColor(input.value); if (rgb) { renderColorPanel(rgb); syncSuggestInputs(); } });
     picker.addEventListener('input', () => { input.value = picker.value; renderColorPanel(CE.hexToRgb(picker.value)); syncSuggestInputs(); });
     $('#addToPalette').addEventListener('click', () => {
-      if (state.palette.length >= 8) return toast(t('toast.full'));
+      if (state.palette.length >= PALETTE_LIMIT) return toast(t('toast.full'));
       state.palette.push({ hex: CE.rgbToHex(state.current.r, state.current.g, state.current.b), locked: false });
       renderPalette();
     });
@@ -144,14 +145,14 @@
       strip.appendChild(el);
     });
 
-    $('#paletteCount').textContent = `(${state.palette.length}/8)`;
-    $('#addSwatchBtn').disabled = state.palette.length >= 8;
+    $('#paletteCount').textContent = `(${state.palette.length}/${PALETTE_LIMIT})`;
+    $('#addSwatchBtn').disabled = state.palette.length >= PALETTE_LIMIT;
     const assess = Vision.assessPalette(paletteHexes());
     $('#paletteMeta').innerHTML = `${cbBadge(assess.verdict)} <span>${assess.verdict === 'n/a' ? '' : t('note.' + assess.verdict)}</span>`;
     renderMocks(paletteHexes());
   }
   function wirePaletteControls() {
-    $('#addSwatchBtn').addEventListener('click', () => { if (state.palette.length >= 8) return; state.palette.push({ hex: '#9aa7a0', locked: false }); renderPalette(); });
+    $('#addSwatchBtn').addEventListener('click', () => { if (state.palette.length >= PALETTE_LIMIT) return; state.palette.push({ hex: '#9aa7a0', locked: false }); renderPalette(); });
     $('#clearPaletteBtn').addEventListener('click', () => {
       const kept = state.palette.filter((p) => p.locked);
       state.palette = kept.length ? kept : [{ hex: '#1b3a5c', locked: false }];
@@ -249,7 +250,7 @@
     });
   }
   function loadIntoBuild(colors) {
-    state.palette = colors.slice(0, 8).map((hex) => ({ hex: CE.normalizeHex(hex) || hex, locked: false }));
+    state.palette = colors.slice(0, PALETTE_LIMIT).map((hex) => ({ hex: CE.normalizeHex(hex) || hex, locked: false }));
     renderPalette(); showView('build');
   }
 
@@ -429,7 +430,8 @@
     try {
       const buf = await file.arrayBuffer();
       const k = parseInt($('#extractK').value, 10);
-      const pages = parseInt($('#extractPages').value, 10);
+      const pageOpt = $('#extractPages').value;
+      const pages = pageOpt === 'all' ? 'all' : parseInt(pageOpt, 10);
       const res = await PDFExtract.extract(buf, {
         k, pages,
         onStatus: (m) => (status.textContent = m) // localized status set inside via t below
@@ -590,7 +592,7 @@
       const id = el.dataset.id, c = state.colors.find((x) => x.id === id);
       $$('[data-copy]', el).forEach((n) => n.addEventListener('click', () => copy(n.dataset.copy)));
       $('[data-act="add"]', el).addEventListener('click', () => {
-        if (state.palette.length >= 8) return toast(t('toast.full'));
+        if (state.palette.length >= PALETTE_LIMIT) return toast(t('toast.full'));
         state.palette.push({ hex: c.hex, locked: false }); renderPalette(); toast(t('toast.addedPalette'));
       });
       $('[data-act="del"]', el).addEventListener('click', async () => { state.colors = state.colors.filter((x) => x.id !== id); await persistLibrary(); renderColorLibrary(); });
